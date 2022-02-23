@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { Pool } from "pg";
 
 dotenv.config();
-let client;
+
 const {
   POSTGRES_HOST,
   POSTGRES_DB,
@@ -12,6 +12,8 @@ const {
   POSTGRES_DB_TEST,
 } = process.env;
 
+let client: Pool;
+console.log(ENV);
 // connection with the Database
 if (ENV === "test") {
   client = new Pool({
@@ -29,6 +31,8 @@ if (ENV === "dev") {
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });
+} else {
+  throw new Error("ENV not defined");
 }
 
 export default client;
