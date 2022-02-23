@@ -70,6 +70,58 @@ var ProductsStore = /** @class */ (function () {
             });
         });
     };
+    ProductsStore.prototype.show = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, product, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "SELECT * FROM products WHERE id = $1";
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        product = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, product];
+                    case 3:
+                        error_2 = _a.sent();
+                        throw new Error("unable to get product: ".concat(error_2));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // CREATE METHOD REQUIRES TOKEN AUTHENTICATION
+    // todo : needs the JWT token to be passed in the header
+    ProductsStore.prototype.create = function (product) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, newProduct, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "INSERT INTO products (name, price) VALUES ($1, $2)";
+                        return [4 /*yield*/, conn.query(sql, [product.name, product.price])];
+                    case 2:
+                        result = _a.sent();
+                        newProduct = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, newProduct];
+                    case 3:
+                        error_3 = _a.sent();
+                        throw new Error("unable to create product: ".concat(error_3));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return ProductsStore;
 }());
 exports.ProductsStore = ProductsStore;

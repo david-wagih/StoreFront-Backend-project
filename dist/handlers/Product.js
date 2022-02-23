@@ -59,11 +59,57 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var Product, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(parseInt(req.params.id))];
+            case 1:
+                Product = _a.sent();
+                res.json(Product);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var create = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product, Product, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                product = {
+                    name: _req.body.name,
+                    price: parseInt(_req.body.price),
+                    id: 0
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.create(product)];
+            case 2:
+                Product = _a.sent();
+                res.json(Product);
+                return [3 /*break*/, 4];
+            case 3:
+                err_3 = _a.sent();
+                res.status(400);
+                res.json(err_3);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 // other Handlers
 var productRoutes = function (app) {
-    //   app.get("/orders", index);
-    //   app.get("/orders/:id", show);
-    //   app.post("/orders", create);
     app.get("/products", index);
+    app.get("/products/:id", show);
+    app.post("/products", create);
 };
 exports["default"] = productRoutes;

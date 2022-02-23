@@ -38,9 +38,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var Order_1 = require("../models/Order");
 var store = new Order_1.OrdersStore();
+var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var Orders, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
+            case 1:
+                Orders = _a.sent();
+                res.json(Orders);
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(400);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 // handler for the addProduct method in the Order Model
 var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orderId, productId, quantity, addedProduct, err_1;
+    var orderId, productId, quantity, addedProduct, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -56,9 +76,61 @@ var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0,
                 res.json(addedProduct);
                 return [3 /*break*/, 4];
             case 3:
-                err_1 = _a.sent();
+                err_2 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+// this method to show all orders of a user
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, orders, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = parseInt(req.params.id);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.show(userId)];
+            case 2:
+                orders = _a.sent();
+                res.json(orders);
+                return [3 /*break*/, 4];
+            case 3:
+                err_3 = _a.sent();
+                res.status(400);
+                res.json(err_3);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+// Handler for CREATE METHOD that creates new order
+var create = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order, neworder, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                order = {
+                    userId: parseInt(_req.body.userId),
+                    status: _req.body.status,
+                    id: 0
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.create(order)];
+            case 2:
+                neworder = _a.sent();
+                res.json(neworder);
+                return [3 /*break*/, 4];
+            case 3:
+                err_4 = _a.sent();
+                res.status(400);
+                res.json(err_4);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
@@ -66,9 +138,9 @@ var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0,
 }); };
 // other Handlers
 var orderRoutes = function (app) {
-    //   app.get("/orders", index);
-    //   app.get("/orders/:id", show);
-    //   app.post("/orders", create);
+    app.get("/orders", index);
+    app.get("/orders/:id", show);
+    app.post("/orders", create);
     app.post("/orders/:id/products", addProduct);
 };
 exports["default"] = orderRoutes;

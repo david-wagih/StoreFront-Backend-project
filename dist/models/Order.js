@@ -35,16 +35,72 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 exports.OrdersStore = void 0;
+var database_1 = __importDefault(require("../database"));
 var OrdersStore = /** @class */ (function () {
     function OrdersStore() {
     }
+    OrdersStore.prototype.index = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, orders, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = "SELECT * FROM orders";
+                        return [4 /*yield*/, Client.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        orders = result.rows;
+                        conn.release();
+                        return [2 /*return*/, orders];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("".concat(err_1));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Create a new order
+    // todo : it needs JWT here
+    OrdersStore.prototype.create = function (order) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, newOrder, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "INSERT INTO products (name, price) VALUES ($1, $2)";
+                        return [4 /*yield*/, conn.query(sql, [order.id, order.status])];
+                    case 2:
+                        result = _a.sent();
+                        newOrder = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, newOrder];
+                    case 3:
+                        error_1 = _a.sent();
+                        throw new Error("unable to create order: ".concat(error_1));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     // add products to an order
     // todo : we need JWT here
     OrdersStore.prototype.addProduct = function (quantity, orderId, productId) {
         return __awaiter(this, void 0, void 0, function () {
-            var ordersql, conn, result, order, err_1, sql, conn, result, order, err_2;
+            var ordersql, conn, result, order, err_2, sql, conn, result, order, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -63,8 +119,8 @@ var OrdersStore = /** @class */ (function () {
                         conn.release();
                         return [3 /*break*/, 4];
                     case 3:
-                        err_1 = _a.sent();
-                        throw new Error("".concat(err_1));
+                        err_2 = _a.sent();
+                        throw new Error("".concat(err_2));
                     case 4:
                         _a.trys.push([4, 7, , 8]);
                         sql = "INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *";
@@ -78,9 +134,36 @@ var OrdersStore = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, order];
                     case 7:
-                        err_2 = _a.sent();
-                        throw new Error("Could not add product ".concat(productId, " to order ").concat(orderId, ": ").concat(err_2));
+                        err_3 = _a.sent();
+                        throw new Error("Could not add product ".concat(productId, " to order ").concat(orderId, ": ").concat(err_3));
                     case 8: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // show Orders of specific User
+    // todo: need JWT also
+    OrdersStore.prototype.show = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, orders, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = "SELECT * FROM orders WHERE user_id=($1)";
+                        return [4 /*yield*/, Client.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [userId])];
+                    case 2:
+                        result = _a.sent();
+                        orders = result.rows;
+                        conn.release();
+                        return [2 /*return*/, orders];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("".concat(err_4));
+                    case 4: return [2 /*return*/];
                 }
             });
         });

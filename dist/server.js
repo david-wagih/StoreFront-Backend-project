@@ -11,7 +11,7 @@ var app = (0, express_1["default"])();
 var port = 3000;
 app.use(body_parser_1["default"].json());
 app.get("/", function (req, res) {
-    res.send("Hello World!");
+    res.send("Hello from the Main Route!");
 });
 app.listen(3000, function () {
     console.log("starting app on: ".concat(port));
