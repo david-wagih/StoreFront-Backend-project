@@ -1,6 +1,5 @@
 import express from "express";
-import { OrdersStore } from "../models/Order";
-import { ProductsStore } from "../models/Product";
+import { Product, ProductsStore } from "../models/Product";
 
 const store = new ProductsStore();
 
@@ -15,13 +14,37 @@ const index = async (_req: express.Request, res: express.Response) => {
   }
 };
 
+const show = async (req: express.Request, res: express.Response) => {
+  try {
+    const Product = await store.show(parseInt(req.params.id));
+    res.json(Product);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
+const create = async (_req: express.Request, res: express.Response) => {
+  const product: Product = {
+    name: _req.body.name,
+    price: parseInt(_req.body.price),
+    id: 0,
+  };
+
+  try {
+    const Product = await store.create(product);
+    res.json(Product);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
 // other Handlers
 
 const productRoutes = (app: express.Application) => {
-  //   app.get("/orders", index);
-  //   app.get("/orders/:id", show);
-  //   app.post("/orders", create);
   app.get("/products", index);
+  app.get("/products/:id", show);
+  app.post("/products", create);
 };
 
 export default productRoutes;
