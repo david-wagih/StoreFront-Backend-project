@@ -1,6 +1,7 @@
 import express from "express";
 import { Product, ProductsStore } from "../models/Product";
 import jwt from "jsonwebtoken";
+import authenticate from "../middlewares/authenticate";
 
 const store = new ProductsStore();
 
@@ -52,15 +53,6 @@ const create = async (req: express.Request, res: express.Response) => {
 
 const deleteProduct = async (req: express.Request, res: express.Response) => {
   try {
-    const authorizationHeader = req.headers.authorization;
-    const token = String(authorizationHeader).split(" ")[1];
-    jwt.verify(token, String(process.env.TOKEN_SECRET));
-  } catch (err) {
-    res.status(401);
-    res.json("Access denied, invalid token");
-    return;
-  }
-  try {
     // @ts-ignore
     const deletedProduct = await store.delete(req.params.id);
     res.json(deletedProduct);
@@ -73,8 +65,8 @@ const deleteProduct = async (req: express.Request, res: express.Response) => {
 const productRoutes = (app: express.Application) => {
   app.get("/products", index);
   app.get("/products/:id", show);
-  app.post("/products", create);
-  app.delete("/products/:id", deleteProduct);
+  app.post("/products", authenticate, create);
+  app.delete("/products/:id", authenticate, deleteProduct);
 };
 
 export default productRoutes;

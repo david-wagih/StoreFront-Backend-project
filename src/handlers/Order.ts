@@ -1,6 +1,7 @@
 import express from "express";
 import { Order, OrdersStore } from "../models/Order";
 import jwt from "jsonwebtoken";
+import authenticate from "../middlewares/authenticate";
 
 const store = new OrdersStore();
 
@@ -16,16 +17,6 @@ const index = async (_req: express.Request, res: express.Response) => {
 
 const show = async (req: express.Request, res: express.Response) => {
   try {
-    const authorizationHeader = req.headers.authorization;
-    const token = String(authorizationHeader).split(" ")[1];
-    jwt.verify(token, String(process.env.TOKEN_SECRET));
-  } catch (err) {
-    res.status(401);
-    res.json("Access denied, invalid token");
-    return;
-  }
-
-  try {
     const userId: number = parseInt(req.params.id);
     const orders = await store.show(userId);
     res.json(orders);
@@ -36,15 +27,6 @@ const show = async (req: express.Request, res: express.Response) => {
 };
 
 const create = async (_req: express.Request, res: express.Response) => {
-  try {
-    const authorizationHeader = _req.headers.authorization;
-    const token = String(authorizationHeader).split(" ")[1];
-    jwt.verify(token, String(process.env.TOKEN_SECRET));
-  } catch (err) {
-    res.status(401);
-    res.json("Access denied, invalid token");
-    return;
-  }
   try {
     // @ts-ignore
     const order: Order = {
@@ -66,16 +48,6 @@ const addProduct = async (req: express.Request, res: express.Response) => {
   const quantity: number = parseInt(req.body.quantity);
 
   try {
-    const authorizationHeader = req.headers.authorization;
-    const token = String(authorizationHeader).split(" ")[1];
-    jwt.verify(token, String(process.env.TOKEN_SECRET));
-  } catch (err) {
-    res.status(401);
-    res.json("Access denied, invalid token");
-    return;
-  }
-
-  try {
     const addedProduct = await store.addProduct(quantity, orderId, productId);
     res.json(addedProduct);
   } catch (err) {
@@ -86,9 +58,9 @@ const addProduct = async (req: express.Request, res: express.Response) => {
 
 const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);
-  app.get("/orders/:id", show);
-  app.post("/orders", create);
-  app.post("/orders/:id/products", addProduct);
+  app.get("/orders/:id", authenticate, show);
+  app.post("/orders", authenticate, create);
+  app.post("/orders/:id/products", authenticate, addProduct);
 };
 
 export default orderRoutes;
