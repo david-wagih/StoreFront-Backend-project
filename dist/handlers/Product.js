@@ -83,7 +83,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var authorizationHeader, token, product, newBook, err_3;
+    var authorizationHeader, token, product, newProduct, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -106,8 +106,8 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 };
                 return [4 /*yield*/, store.create(product)];
             case 2:
-                newBook = _a.sent();
-                res.json(newBook);
+                newProduct = _a.sent();
+                res.json(newProduct);
                 return [3 /*break*/, 4];
             case 3:
                 err_3 = _a.sent();

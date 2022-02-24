@@ -47,8 +47,6 @@ var saltRounds = String(process.env.SALT_ROUNDS);
 var UsersStore = /** @class */ (function () {
     function UsersStore() {
     }
-    // this is the CREATE method
-    // todo : we will use here the JWT token to create the user
     UsersStore.prototype.create = function (u) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, hash, result, user, err_1;
@@ -101,6 +99,31 @@ var UsersStore = /** @class */ (function () {
                     case 3:
                         err_2 = _a.sent();
                         throw new Error("unable to authenticate user (".concat(u.firstName, "): ").concat(err_2));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UsersStore.prototype.show = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, user, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "SELECT * FROM users WHERE id = $1";
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        user = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, user];
+                    case 3:
+                        err_3 = _a.sent();
+                        throw new Error("unable to show user (".concat(id, "): ").concat(err_3));
                     case 4: return [2 /*return*/];
                 }
             });

@@ -3,6 +3,28 @@ import express from "express";
 import jwt from "jsonwebtoken";
 
 const store = new UsersStore();
+
+const index = async (req: express.Request, res: express.Response) => {
+  try {
+    const user = await store.index();
+    res.json(user);
+  } catch (err) {
+    res.status(404);
+    res.json(err);
+  }
+};
+
+const show = async (req: express.Request, res: express.Response) => {
+  const id = req.params.id;
+  try {
+    const user = await store.show(parseInt(id));
+    res.json(user);
+  } catch (err) {
+    res.status(404);
+    res.json(err);
+  }
+};
+
 const create = async (req: express.Request, res: express.Response) => {
   // @ts-ignore
   const user: User = {
@@ -20,7 +42,6 @@ const create = async (req: express.Request, res: express.Response) => {
   }
 };
 
-// Return a different token when Login is successful
 const authenticate = async (req: express.Request, res: express.Response) => {
   // @ts-ignore
   const user: User = {
@@ -31,7 +52,6 @@ const authenticate = async (req: express.Request, res: express.Response) => {
     const u = await store.authenticate(user);
     var token = jwt.sign({ user: u }, String(process.env.TOKEN_SECRET));
     res.json(token);
-    res.json(u);
   } catch (error) {
     res.status(401);
     res.json({ error });
@@ -39,6 +59,8 @@ const authenticate = async (req: express.Request, res: express.Response) => {
 };
 
 const userRoutes = (app: express.Application) => {
+  app.get("/user", index);
+  app.get("/user/:id", show);
   app.post("/user", create);
   app.post("/user/login", authenticate);
 };

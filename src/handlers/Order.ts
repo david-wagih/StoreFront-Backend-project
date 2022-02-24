@@ -1,5 +1,6 @@
 import express from "express";
 import { Order, OrdersStore } from "../models/Order";
+import jwt from "jsonwebtoken";
 
 const store = new OrdersStore();
 
@@ -13,11 +14,19 @@ const index = async (_req: express.Request, res: express.Response) => {
   }
 };
 
-// this method to show all orders of a user
 const show = async (req: express.Request, res: express.Response) => {
-  const userId: number = parseInt(req.params.id);
+  try {
+    const authorizationHeader = req.headers.authorization;
+    const token = String(authorizationHeader).split(" ")[1];
+    jwt.verify(token, String(process.env.TOKEN_SECRET));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+    return;
+  }
 
   try {
+    const userId: number = parseInt(req.params.id);
     const orders = await store.show(userId);
     res.json(orders);
   } catch (err) {
@@ -26,8 +35,16 @@ const show = async (req: express.Request, res: express.Response) => {
   }
 };
 
-// Handler for CREATE METHOD that creates new order
 const create = async (_req: express.Request, res: express.Response) => {
+  try {
+    const authorizationHeader = _req.headers.authorization;
+    const token = String(authorizationHeader).split(" ")[1];
+    jwt.verify(token, String(process.env.TOKEN_SECRET));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+    return;
+  }
   try {
     // @ts-ignore
     const order: Order = {
@@ -43,11 +60,20 @@ const create = async (_req: express.Request, res: express.Response) => {
   }
 };
 
-// handler for the addProduct method in the Order Model
-const addProduct = async (_req: express.Request, res: express.Response) => {
-  const orderId: string = _req.params.id;
-  const productId: string = _req.body.productId;
-  const quantity: number = parseInt(_req.body.quantity);
+const addProduct = async (req: express.Request, res: express.Response) => {
+  const orderId: string = req.params.id;
+  const productId: string = req.body.productId;
+  const quantity: number = parseInt(req.body.quantity);
+
+  try {
+    const authorizationHeader = req.headers.authorization;
+    const token = String(authorizationHeader).split(" ")[1];
+    jwt.verify(token, String(process.env.TOKEN_SECRET));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+    return;
+  }
 
   try {
     const addedProduct = await store.addProduct(quantity, orderId, productId);
@@ -57,8 +83,6 @@ const addProduct = async (_req: express.Request, res: express.Response) => {
     res.json(err);
   }
 };
-
-// other Handlers
 
 const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);

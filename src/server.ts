@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import orderRoutes from "./handlers/Order";
 import productRoutes from "./handlers/Product";
 import userRoutes from "./handlers/User";
+import showOrderRoutes from "./handlers/CurrentOrder";
 
 const app: express.Application = express();
 const port = 3000;
@@ -19,3 +20,4 @@ app.listen(3000, function () {
 orderRoutes(app);
 productRoutes(app);
 userRoutes(app);
+showOrderRoutes(app);

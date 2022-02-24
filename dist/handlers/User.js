@@ -88,7 +88,6 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 u = _a.sent();
                 token = jsonwebtoken_1["default"].sign({ user: u }, String(process.env.TOKEN_SECRET));
                 res.json(token);
-                res.json(u);
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();

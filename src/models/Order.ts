@@ -25,8 +25,6 @@ export class OrdersStore {
     }
   }
 
-  // Create a new order
-  // todo : it needs JWT here
   async create(order: Order) {
     try {
       const conn = await client.connect();
@@ -40,8 +38,6 @@ export class OrdersStore {
     }
   }
 
-  // add products to an order
-  // todo : we need JWT here
   async addProduct(
     quantity: number,
     orderId: string,
@@ -87,9 +83,6 @@ export class OrdersStore {
       );
     }
   }
-
-  // show Orders of specific User
-  // todo: need JWT also
 
   async show(userId: number): Promise<Order[]> {
     try {

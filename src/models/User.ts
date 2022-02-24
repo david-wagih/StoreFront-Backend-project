@@ -12,8 +12,6 @@ export type User = {
 const pepper = String(process.env.BCRYPT_PASSWORD);
 const saltRounds = String(process.env.SALT_ROUNDS);
 export class UsersStore {
-  // this is the CREATE method
-  // todo : we will use here the JWT token to create the user
   async create(u: User): Promise<User> {
     try {
       const conn = await Client.connect();
@@ -49,6 +47,36 @@ export class UsersStore {
       }
     } catch (err) {
       throw new Error(`unable to authenticate user (${u.firstName}): ${err}`);
+    }
+  }
+
+  async show(id: number): Promise<User | null> {
+    try {
+      const conn = await Client.connect();
+      const sql = "SELECT * FROM users WHERE id = $1";
+      const result = await conn.query(sql, [id]);
+      const user = result.rows[0];
+
+      conn.release();
+
+      return user;
+    } catch (err) {
+      throw new Error(`unable to show user (${id}): ${err}`);
+    }
+  }
+
+  async index(): Promise<User[]> {
+    try {
+      const conn = await Client.connect();
+      const sql = "SELECT * FROM users";
+      const result = await conn.query(sql);
+      const users = result.rows;
+
+      conn.release();
+
+      return users;
+    } catch (err) {
+      throw new Error(`unable to index users: ${err}`);
     }
   }
 }

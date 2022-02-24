@@ -69,8 +69,6 @@ var OrdersStore = /** @class */ (function () {
             });
         });
     };
-    // Create a new order
-    // todo : it needs JWT here
     OrdersStore.prototype.create = function (order) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, newOrder, error_1;
@@ -96,8 +94,6 @@ var OrdersStore = /** @class */ (function () {
             });
         });
     };
-    // add products to an order
-    // todo : we need JWT here
     OrdersStore.prototype.addProduct = function (quantity, orderId, productId) {
         return __awaiter(this, void 0, void 0, function () {
             var ordersql, conn, result, order, err_2, sql, conn, result, order, err_3;
@@ -141,8 +137,6 @@ var OrdersStore = /** @class */ (function () {
             });
         });
     };
-    // show Orders of specific User
-    // todo: need JWT also
     OrdersStore.prototype.show = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
             var sql, conn, result, orders, err_4;

@@ -45,4 +45,16 @@ export class ProductsStore {
       throw new Error(`unable to create product: ${error}`);
     }
   }
+
+  async delete(id: number) {
+    try {
+      const conn = await client.connect();
+      const sql = "DELETE FROM products WHERE id = $1";
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      return result;
+    } catch (error) {
+      throw new Error(`unable to delete product: ${error}`);
+    }
+  }
 }
