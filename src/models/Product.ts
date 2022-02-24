@@ -7,7 +7,6 @@ export type Product = {
 };
 
 export class ProductsStore {
-  // this is the GET method to get List of products
   async index() {
     try {
       const conn = await client.connect();
@@ -34,8 +33,6 @@ export class ProductsStore {
     }
   }
 
-  // CREATE METHOD REQUIRES TOKEN AUTHENTICATION
-  // todo : needs the JWT token to be passed in the header
   async create(product: Product) {
     try {
       const conn = await client.connect();

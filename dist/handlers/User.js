@@ -39,88 +39,68 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var Product_1 = require("../models/Product");
+var User_1 = require("../models/User");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var store = new Product_1.ProductsStore();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var Products, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.index()];
-            case 1:
-                Products = _a.sent();
-                res.json(Products);
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                res.status(400);
-                res.json(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var Product, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(parseInt(req.params.id))];
-            case 1:
-                Product = _a.sent();
-                res.json(Product);
-                return [3 /*break*/, 3];
-            case 2:
-                err_2 = _a.sent();
-                res.status(400);
-                res.json(err_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
+var store = new User_1.UsersStore();
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var authorizationHeader, token, product, newBook, err_3;
+    var user, newUser, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                try {
-                    authorizationHeader = req.headers.authorization;
-                    token = String(authorizationHeader).split(" ")[1];
-                    jsonwebtoken_1["default"].verify(token, String(process.env.TOKEN_SECRET));
-                }
-                catch (err) {
-                    res.status(401);
-                    res.json("Access denied, invalid token");
-                    return [2 /*return*/];
-                }
+                user = {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    password: req.body.password
+                };
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                product = {
-                    name: req.body.name,
-                    price: req.body.price
-                };
-                return [4 /*yield*/, store.create(product)];
+                return [4 /*yield*/, store.create(user)];
             case 2:
-                newBook = _a.sent();
-                res.json(newBook);
+                newUser = _a.sent();
+                token = jsonwebtoken_1["default"].sign({ user: newUser }, String(process.env.TOKEN_SECRET));
+                res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_3 = _a.sent();
+                err_1 = _a.sent();
                 res.status(400);
-                res.json(err_3);
+                res.json(err_1);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-var productRoutes = function (app) {
-    app.get("/products", index);
-    app.get("/products/:id", show);
-    app.post("/products", create);
+// Return a different token when Login is successful
+var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, u, token, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = {
+                    firstName: req.body.firstName,
+                    password: req.body.password
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.authenticate(user)];
+            case 2:
+                u = _a.sent();
+                token = jsonwebtoken_1["default"].sign({ user: u }, String(process.env.TOKEN_SECRET));
+                res.json(token);
+                res.json(u);
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                res.status(401);
+                res.json({ error: error_1 });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+var userRoutes = function (app) {
+    app.post("/user", create);
+    app.post("/user/login", authenticate);
 };
-exports["default"] = productRoutes;
+exports["default"] = userRoutes;

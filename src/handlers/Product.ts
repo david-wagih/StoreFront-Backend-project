@@ -1,9 +1,9 @@
 import express from "express";
 import { Product, ProductsStore } from "../models/Product";
+import jwt from "jsonwebtoken";
 
 const store = new ProductsStore();
 
-// handler for the addProduct method in the Order Model
 const index = async (_req: express.Request, res: express.Response) => {
   try {
     const Products = await store.index();
@@ -24,22 +24,31 @@ const show = async (req: express.Request, res: express.Response) => {
   }
 };
 
-const create = async (_req: express.Request, res: express.Response) => {
-  const product: Product = {
-    name: _req.body.name,
-    price: parseInt(_req.body.price),
-    id: 0,
-  };
+const create = async (req: express.Request, res: express.Response) => {
+  try {
+    const authorizationHeader = req.headers.authorization;
+    const token = String(authorizationHeader).split(" ")[1];
+    jwt.verify(token, String(process.env.TOKEN_SECRET));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+    return;
+  }
 
   try {
-    const Product = await store.create(product);
-    res.json(Product);
+    // @ts-ignore
+    const product: Product = {
+      name: req.body.name,
+      price: req.body.price,
+    };
+
+    const newProduct = await store.create(product);
+    res.json(newProduct);
   } catch (err) {
     res.status(400);
     res.json(err);
   }
 };
-// other Handlers
 
 const productRoutes = (app: express.Application) => {
   app.get("/products", index);

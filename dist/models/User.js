@@ -39,14 +39,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.ProductsStore = void 0;
+exports.UsersStore = void 0;
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var database_1 = __importDefault(require("../database"));
-var ProductsStore = /** @class */ (function () {
-    function ProductsStore() {
+var pepper = String(process.env.BCRYPT_PASSWORD);
+var saltRounds = String(process.env.SALT_ROUNDS);
+var UsersStore = /** @class */ (function () {
+    function UsersStore() {
     }
-    ProductsStore.prototype.index = function () {
+    // this is the CREATE method
+    // todo : we will use here the JWT token to create the user
+    UsersStore.prototype.create = function (u) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, products, error_1;
+            var conn, sql, hash, result, user, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -54,24 +59,25 @@ var ProductsStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "SELECT * FROM products";
-                        return [4 /*yield*/, conn.query(sql)];
+                        sql = "INSERT INTO users (firstName, lastName , password) VALUES($1, $2 , $3) RETURNING *";
+                        hash = bcrypt_1["default"].hashSync(u.password + pepper, parseInt(saltRounds));
+                        return [4 /*yield*/, conn.query(sql, [u.firstName, u.lastName, hash])];
                     case 2:
                         result = _a.sent();
-                        products = result.rows;
+                        user = result.rows[0];
                         conn.release();
-                        return [2 /*return*/, products];
+                        return [2 /*return*/, user];
                     case 3:
-                        error_1 = _a.sent();
-                        throw new Error("unable to get products: ".concat(error_1));
+                        err_1 = _a.sent();
+                        throw new Error("unable create user (".concat(u.firstName, "): ").concat(err_1));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    ProductsStore.prototype.show = function (id) {
+    UsersStore.prototype.authenticate = function (u) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, product, error_2;
+            var conn, sql, result, user, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -79,46 +85,27 @@ var ProductsStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "SELECT * FROM products WHERE id = $1";
-                        return [4 /*yield*/, conn.query(sql, [id])];
+                        sql = "SELECT * FROM users WHERE firstName = $1";
+                        return [4 /*yield*/, conn.query(sql, [u.firstName])];
                     case 2:
                         result = _a.sent();
-                        product = result.rows[0];
+                        user = result.rows[0];
                         conn.release();
-                        return [2 /*return*/, product];
+                        if (user && bcrypt_1["default"].compareSync(u.password + pepper, user.password)) {
+                            return [2 /*return*/, user];
+                        }
+                        else {
+                            return [2 /*return*/, null];
+                        }
+                        return [3 /*break*/, 4];
                     case 3:
-                        error_2 = _a.sent();
-                        throw new Error("unable to get product: ".concat(error_2));
+                        err_2 = _a.sent();
+                        throw new Error("unable to authenticate user (".concat(u.firstName, "): ").concat(err_2));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    ProductsStore.prototype.create = function (product) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, newProduct, error_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1["default"].connect()];
-                    case 1:
-                        conn = _a.sent();
-                        sql = "INSERT INTO products (name, price) VALUES ($1, $2)";
-                        return [4 /*yield*/, conn.query(sql, [product.name, product.price])];
-                    case 2:
-                        result = _a.sent();
-                        newProduct = result.rows[0];
-                        conn.release();
-                        return [2 /*return*/, newProduct];
-                    case 3:
-                        error_3 = _a.sent();
-                        throw new Error("unable to create product: ".concat(error_3));
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return ProductsStore;
+    return UsersStore;
 }());
-exports.ProductsStore = ProductsStore;
+exports.UsersStore = UsersStore;
