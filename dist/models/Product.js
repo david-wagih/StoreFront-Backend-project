@@ -119,6 +119,30 @@ var ProductsStore = /** @class */ (function () {
             });
         });
     };
+    ProductsStore.prototype["delete"] = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "DELETE FROM products WHERE id = $1";
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result];
+                    case 3:
+                        error_4 = _a.sent();
+                        throw new Error("unable to delete product: ".concat(error_4));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return ProductsStore;
 }());
 exports.ProductsStore = ProductsStore;

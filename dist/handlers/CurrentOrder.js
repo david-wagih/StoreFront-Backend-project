@@ -39,19 +39,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var Product_1 = require("../models/Product");
 var authenticate_1 = __importDefault(require("../middlewares/authenticate"));
-var store = new Product_1.ProductsStore();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var Products, err_1;
+var CurrentOrder_1 = require("../models/CurrentOrder");
+var store = new CurrentOrder_1.CurrentOrderStore();
+var showCurentOrder = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var Order, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.index()];
+                return [4 /*yield*/, store.showCurentOrder(parseInt(_req.params.id))];
             case 1:
-                Products = _a.sent();
-                res.json(Products);
+                Order = _a.sent();
+                res.json(Order);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -62,74 +62,7 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var Product, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(parseInt(req.params.id))];
-            case 1:
-                Product = _a.sent();
-                res.json(Product);
-                return [3 /*break*/, 3];
-            case 2:
-                err_2 = _a.sent();
-                res.status(400);
-                res.json(err_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, newProduct, err_3;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                product = {
-                    name: req.body.name,
-                    price: req.body.price
-                };
-                return [4 /*yield*/, store.create(product)];
-            case 1:
-                newProduct = _a.sent();
-                res.json(newProduct);
-                return [3 /*break*/, 3];
-            case 2:
-                err_3 = _a.sent();
-                res.status(400);
-                res.json(err_3);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deletedProduct, err_4;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store["delete"](req.params.id)];
-            case 1:
-                deletedProduct = _a.sent();
-                res.json(deletedProduct);
-                return [3 /*break*/, 3];
-            case 2:
-                err_4 = _a.sent();
-                res.status(400);
-                res.json(err_4);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-var productRoutes = function (app) {
-    app.get("/products", index);
-    app.get("/products/:id", show);
-    app.post("/products", authenticate_1["default"], create);
-    app["delete"]("/products/:id", authenticate_1["default"], deleteProduct);
+var showOrderRoutes = function (app) {
+    app.get("/showOrder/:id", authenticate_1["default"], showCurentOrder);
 };
-exports["default"] = productRoutes;
+exports["default"] = showOrderRoutes;

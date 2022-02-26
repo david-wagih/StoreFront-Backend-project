@@ -42,14 +42,14 @@ const create = async (req: express.Request, res: express.Response) => {
   }
 };
 
-const authenticate = async (req: express.Request, res: express.Response) => {
+const login = async (req: express.Request, res: express.Response) => {
   // @ts-ignore
   const user: User = {
     firstName: req.body.firstName,
     password: req.body.password,
   };
   try {
-    const u = await store.authenticate(user);
+    const u = await store.login(user);
     var token = jwt.sign({ user: u }, String(process.env.TOKEN_SECRET));
     res.json(token);
   } catch (error) {
@@ -62,7 +62,7 @@ const userRoutes = (app: express.Application) => {
   app.get("/user", index);
   app.get("/user/:id", show);
   app.post("/user", create);
-  app.post("/user/login", authenticate);
+  app.post("/user/login", login);
 };
 
 export default userRoutes;

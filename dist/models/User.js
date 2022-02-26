@@ -73,7 +73,7 @@ var UsersStore = /** @class */ (function () {
             });
         });
     };
-    UsersStore.prototype.authenticate = function (u) {
+    UsersStore.prototype.login = function (u) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, user, err_2;
             return __generator(this, function (_a) {
@@ -124,6 +124,31 @@ var UsersStore = /** @class */ (function () {
                     case 3:
                         err_3 = _a.sent();
                         throw new Error("unable to show user (".concat(id, "): ").concat(err_3));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UsersStore.prototype.index = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, users, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "SELECT * FROM users";
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        users = result.rows;
+                        conn.release();
+                        return [2 /*return*/, users];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("unable to index users: ".concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });

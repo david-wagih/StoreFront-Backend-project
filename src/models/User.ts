@@ -31,7 +31,7 @@ export class UsersStore {
     }
   }
 
-  async authenticate(u: User): Promise<User | null> {
+  async login(u: User): Promise<User | null> {
     try {
       const conn = await Client.connect();
       const sql = "SELECT * FROM users WHERE firstName = $1";

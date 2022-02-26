@@ -42,8 +42,51 @@ exports.__esModule = true;
 var User_1 = require("../models/User");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var store = new User_1.UsersStore();
+var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
+            case 1:
+                user = _a.sent();
+                res.json(user);
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(404);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.params.id;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.show(parseInt(id))];
+            case 2:
+                user = _a.sent();
+                res.json(user);
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _a.sent();
+                res.status(404);
+                res.json(err_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, token, err_1;
+    var user, newUser, token, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -62,16 +105,15 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_1 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-// Return a different token when Login is successful
-var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, u, token, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -83,7 +125,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.authenticate(user)];
+                return [4 /*yield*/, store.login(user)];
             case 2:
                 u = _a.sent();
                 token = jsonwebtoken_1["default"].sign({ user: u }, String(process.env.TOKEN_SECRET));
@@ -99,7 +141,9 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 var userRoutes = function (app) {
+    app.get("/user", index);
+    app.get("/user/:id", show);
     app.post("/user", create);
-    app.post("/user/login", authenticate);
+    app.post("/user/login", login);
 };
 exports["default"] = userRoutes;
