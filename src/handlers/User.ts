@@ -1,6 +1,7 @@
 import { User, UsersStore } from "../models/User";
 import express from "express";
 import jwt from "jsonwebtoken";
+import authenticate from "../middlewares/authenticate";
 
 const store = new UsersStore();
 
@@ -58,11 +59,33 @@ const login = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const deleteUser = async (req: express.Request, res: express.Response) => {
+  try {
+    const deletedUser = await store.deleteUser(Number(req.params.id));
+    res.json(deletedUser);
+  } catch (err) {
+    res.status(404);
+    res.json(err);
+  }
+};
+
+const updateUser = async (req: express.Request, res: express.Response) => {
+  try {
+    const updatedUser = await store.updateUser(Number(req.params.id), req.body);
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(404);
+    res.json(err);
+  }
+};
+
 const userRoutes = (app: express.Application) => {
-  app.get("/user", index);
-  app.get("/user/:id", show);
+  app.get("/user", authenticate, index);
+  app.get("/user/:id", authenticate, show);
   app.post("/user", create);
   app.post("/user/login", login);
+  app.delete("/user/:id", authenticate, deleteUser);
+  app.put("/user/:id", authenticate, updateUser);
 };
 
 export default userRoutes;

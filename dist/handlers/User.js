@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var User_1 = require("../models/User");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var authenticate_1 = __importDefault(require("../middlewares/authenticate"));
 var store = new User_1.UsersStore();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, err_1;
@@ -140,10 +141,52 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); };
+var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var deletedUser, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.deleteUser(Number(req.params.id))];
+            case 1:
+                deletedUser = _a.sent();
+                res.json(deletedUser);
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                res.status(404);
+                res.json(err_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var updateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var updatedUser, err_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.updateUser(Number(req.params.id), req.body)];
+            case 1:
+                updatedUser = _a.sent();
+                res.json(updatedUser);
+                return [3 /*break*/, 3];
+            case 2:
+                err_5 = _a.sent();
+                res.status(404);
+                res.json(err_5);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var userRoutes = function (app) {
-    app.get("/user", index);
-    app.get("/user/:id", show);
+    app.get("/user", authenticate_1["default"], index);
+    app.get("/user/:id", authenticate_1["default"], show);
     app.post("/user", create);
     app.post("/user/login", login);
+    app["delete"]("/user/:id", authenticate_1["default"], deleteUser);
+    app.put("/user/:id", authenticate_1["default"], updateUser);
 };
 exports["default"] = userRoutes;

@@ -79,4 +79,40 @@ export class UsersStore {
       throw new Error(`unable to index users: ${err}`);
     }
   }
+
+  async deleteUser(id: number): Promise<User | null> {
+    try {
+      const conn = await Client.connect();
+      const sql = "DELETE FROM users WHERE id = $1";
+      const result = await conn.query(sql, [id]);
+      const user = result.rows[0];
+
+      conn.release();
+
+      return user;
+    } catch (err) {
+      throw new Error(`unable to delete user: ${err}`);
+    }
+  }
+
+  async updateUser(id: number, u: User): Promise<User | null> {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        " UPDATE users SET firstName = $2, lastName = $3, password = $4 WHERE id = $1 RETURNING *";
+      const result = await conn.query(sql, [
+        id,
+        u.firstName,
+        u.lastName,
+        u.password,
+      ]);
+      const user = result.rows[0];
+
+      conn.release();
+
+      return user;
+    } catch (err) {
+      throw new Error(`unable to update user: ${err}`);
+    }
+  }
 }

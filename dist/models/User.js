@@ -154,6 +154,61 @@ var UsersStore = /** @class */ (function () {
             });
         });
     };
+    UsersStore.prototype.deleteUser = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, user, err_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "DELETE FROM users WHERE id = $1";
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        user = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, user];
+                    case 3:
+                        err_5 = _a.sent();
+                        throw new Error("unable to delete user: ".concat(err_5));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UsersStore.prototype.updateUser = function (id, u) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, user, err_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = " UPDATE users SET firstName = $2, lastName = $3, password = $4 WHERE id = $1 RETURNING *";
+                        return [4 /*yield*/, conn.query(sql, [
+                                id,
+                                u.firstName,
+                                u.lastName,
+                                u.password,
+                            ])];
+                    case 2:
+                        result = _a.sent();
+                        user = result.rows[0];
+                        conn.release();
+                        return [2 /*return*/, user];
+                    case 3:
+                        err_6 = _a.sent();
+                        throw new Error("unable to update user: ".concat(err_6));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return UsersStore;
 }());
 exports.UsersStore = UsersStore;

@@ -8,7 +8,8 @@ const authenticate = (
 ): void => {
   try {
     const authorizationHeader = req.headers.authorization;
-    const token = String(authorizationHeader).split(" ")[1];
+    const token = String(authorizationHeader);
+    console.log(token);
     jwt.verify(token, String(process.env.TOKEN_SECRET));
     next();
   } catch (err) {
