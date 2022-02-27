@@ -1,6 +1,5 @@
 import express from "express";
 import { Product, ProductsStore } from "../models/Product";
-import jwt from "jsonwebtoken";
 import authenticate from "../middlewares/authenticate";
 
 const store = new ProductsStore();

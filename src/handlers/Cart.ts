@@ -1,5 +1,4 @@
 import express from "express";
-import jwt from "jsonwebtoken";
 import authenticate from "../middlewares/authenticate";
 import { CurrentOrder, CurrentOrderStore } from "../models/Cart";
 

@@ -10,7 +10,6 @@ describe("POST /user", () => {
       password: "dazy123",
     };
     const res = await request(app).post("/user").send(user);
-    console.log(res.body);
     expect(res.status).toBe(200);
   });
 });
@@ -23,7 +22,6 @@ describe("POST /user/login", () => {
       password: "dazy123",
     };
     const res = await request(app).post("/user/login").send(user);
-    console.log(res.body);
     expect(res.status).toBe(200);
   });
 });
