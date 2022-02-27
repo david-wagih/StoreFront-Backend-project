@@ -8,21 +8,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = require("../../models/User");
+const supertest_1 = __importDefault(require("supertest"));
+const server_1 = __importDefault(require("../../server"));
 const store = new User_1.UsersStore();
-// Test for the Create Method in User Model
-describe("Create User Method", () => {
-    it("should create a user", () => __awaiter(void 0, void 0, void 0, function* () {
+describe("POST /user", () => {
+    it("should return a token", () => __awaiter(void 0, void 0, void 0, function* () {
         const user = {
-            id: 3,
-            firstName: "John",
-            lastName: "Doe",
-            password: "12345",
+            firstName: "david",
+            lastName: "wagih",
+            password: "dazy123",
         };
-        const createdUser = yield store.create(user);
-        expect(createdUser.firstName).toBe(user.firstName);
-        expect(createdUser.lastName).toBe(user.lastName);
-        expect(createdUser.password).toBe(user.password);
+        const res = yield (0, supertest_1.default)(server_1.default).post("/user").send(user);
+        console.log(res.body);
+        expect(res.status).toBe(200);
+    }));
+});
+describe("POST /user/login", () => {
+    it("should return a token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = {
+            firstName: "david",
+            password: "dazy123",
+        };
+        const res = yield (0, supertest_1.default)(server_1.default).post("/user/login").send(user);
+        console.log(res.body);
+        expect(res.status).toBe(200);
+    }));
+});
+// todo : needs authentication
+describe("GET /user", () => {
+    it("should return a 200 response", () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield (0, supertest_1.default)(server_1.default).get("/user");
+        expect(res.status).toBe(200);
     }));
 });

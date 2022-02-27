@@ -14,15 +14,7 @@ const {
 
 let client: Pool;
 console.log(ENV);
-// connection with the Database
-if (ENV === "test") {
-  client = new Pool({
-    host: POSTGRES_HOST,
-    database: POSTGRES_DB_TEST,
-    user: POSTGRES_USER,
-    password: POSTGRES_PASSWORD,
-  });
-} else if (ENV === "dev") {
+if (ENV === "dev") {
   client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_DB,
@@ -30,7 +22,12 @@ if (ENV === "test") {
     password: POSTGRES_PASSWORD,
   });
 } else {
-  throw new Error("ENV not defined");
+  client = new Pool({
+    host: POSTGRES_HOST,
+    database: POSTGRES_DB_TEST,
+    user: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+  });
 }
 
 export default client;

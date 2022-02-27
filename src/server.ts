@@ -21,3 +21,5 @@ orderRoutes(app);
 productRoutes(app);
 userRoutes(app);
 showOrderRoutes(app);
+
+export default app;

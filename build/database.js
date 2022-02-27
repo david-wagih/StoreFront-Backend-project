@@ -9,16 +9,7 @@ dotenv_1.default.config();
 const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, ENV, POSTGRES_DB_TEST, } = process.env;
 let client;
 console.log(ENV);
-// connection with the Database
-if (ENV === "test") {
-    client = new pg_1.Pool({
-        host: POSTGRES_HOST,
-        database: POSTGRES_DB_TEST,
-        user: POSTGRES_USER,
-        password: POSTGRES_PASSWORD,
-    });
-}
-else if (ENV === "dev") {
+if (ENV === "dev") {
     client = new pg_1.Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_DB,
@@ -27,6 +18,11 @@ else if (ENV === "dev") {
     });
 }
 else {
-    throw new Error("ENV not defined");
+    client = new pg_1.Pool({
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB_TEST,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD,
+    });
 }
 exports.default = client;

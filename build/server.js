@@ -22,3 +22,4 @@ app.listen(3000, function () {
 (0, Product_1.default)(app);
 (0, User_1.default)(app);
 (0, CurrentOrder_1.default)(app);
+exports.default = app;
