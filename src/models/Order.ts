@@ -2,7 +2,7 @@ import client from "../database";
 
 export type Order = {
   id: number;
-  userId: number;
+  user_Id: number;
   status: string;
 };
 
@@ -10,8 +10,7 @@ export class OrdersStore {
   async index(): Promise<Order[]> {
     try {
       const sql = "SELECT * FROM orders";
-      //@ts-ignore
-      const conn = await Client.connect();
+      const conn = await client.connect();
 
       const result = await conn.query(sql);
 
@@ -28,8 +27,8 @@ export class OrdersStore {
   async create(order: Order) {
     try {
       const conn = await client.connect();
-      const sql = "INSERT INTO products (name, price) VALUES ($1, $2)";
-      const result = await conn.query(sql, [order.id, order.status]);
+      const sql = "INSERT INTO orders (status, user_id) VALUES ($1, $2)";
+      const result = await conn.query(sql, [order.status, order.user_Id]);
       const newOrder = result.rows[0];
       conn.release();
       return newOrder;
@@ -38,15 +37,13 @@ export class OrdersStore {
     }
   }
 
-  async show(userId: number): Promise<Order> {
+  async show(id: number): Promise<Order> {
     try {
-      const sql = "SELECT * FROM orders WHERE user_id=($1)";
-      //@ts-ignore
-      const conn = await Client.connect();
+      const sql = "SELECT * FROM orders WHERE id=($1)";
+      const conn = await client.connect();
 
-      const result = await conn.query(sql, [userId]);
-
-      const orders = result.rows;
+      const result = await conn.query(sql, [id]);
+      const orders = result.rows[0];
 
       conn.release();
 
@@ -59,8 +56,7 @@ export class OrdersStore {
   async updateOrder(id: number, order: Order): Promise<Order> {
     try {
       const sql = "UPDATE orders SET status = $1 WHERE id = $2";
-      //@ts-ignore
-      const conn = await Client.connect();
+      const conn = await client.connect();
 
       const result = await conn.query(sql, [order.status, id]);
 
@@ -77,8 +73,7 @@ export class OrdersStore {
   async deleteOrder(id: number): Promise<Order> {
     try {
       const sql = "DELETE FROM orders WHERE id = $1";
-      //@ts-ignore
-      const conn = await Client.connect();
+      const conn = await client.connect();
 
       const result = await conn.query(sql, [id]);
 

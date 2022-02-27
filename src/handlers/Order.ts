@@ -4,7 +4,7 @@ import authenticate from "../middlewares/authenticate";
 
 const store = new OrdersStore();
 
-const index = async (_req: express.Request, res: express.Response) => {
+const index = async (req: express.Request, res: express.Response) => {
   try {
     const Orders = await store.index();
     res.json(Orders);
@@ -25,15 +25,9 @@ const show = async (req: express.Request, res: express.Response) => {
   }
 };
 
-const create = async (_req: express.Request, res: express.Response) => {
+const create = async (req: express.Request, res: express.Response) => {
   try {
-    // @ts-ignore
-    const order: Order = {
-      userId: parseInt(_req.body.userId),
-      status: _req.body.status,
-    };
-
-    const neworder = await store.create(order);
+    const neworder = await store.create(req.body);
     res.json(neworder);
   } catch (err) {
     res.status(400);
@@ -42,11 +36,9 @@ const create = async (_req: express.Request, res: express.Response) => {
 };
 
 const updateOrder = async (req: express.Request, res: express.Response) => {
-  const orderId = req.params.id;
-  const status = req.body.status;
-
   try {
-    const updatedOrder = await store.updateOrder(Number(orderId), status);
+    // @ts-ignore
+    const updatedOrder = await store.updateOrder(req.params.id, req.body);
     res.json(updatedOrder);
   } catch (err) {
     res.status(400);
@@ -54,9 +46,9 @@ const updateOrder = async (req: express.Request, res: express.Response) => {
 };
 
 const deleteOrder = async (req: express.Request, res: express.Response) => {
-  const orderId = req.params.id;
   try {
-    const deletedOrder = await store.deleteOrder(Number(orderId));
+    // @ts-ignore
+    const deletedOrder = await store.deleteOrder(req.params.id);
     res.json(deletedOrder);
   } catch (err) {
     res.status(400);
