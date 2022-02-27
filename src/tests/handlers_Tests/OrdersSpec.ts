@@ -12,7 +12,7 @@ describe("POST /orders", () => {
       .post("/orders")
       .send({
         status: "pending",
-        user_Id: 5,
+        user_Id: 1,
       })
       .set("Authorization", token.body);
     expect(response.status).toBe(200);
