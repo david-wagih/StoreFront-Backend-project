@@ -1,9 +1,7 @@
-import { UsersStore } from "../../models/User";
 import request from "supertest";
 import app from "../../server";
 
-const store = new UsersStore();
-
+// Create new user
 describe("POST /user", () => {
   it("should return a token", async () => {
     const user = {
@@ -17,6 +15,7 @@ describe("POST /user", () => {
   });
 });
 
+// Login
 describe("POST /user/login", () => {
   it("should return a token", async () => {
     const user = {
@@ -29,11 +28,66 @@ describe("POST /user/login", () => {
   });
 });
 
-// todo : needs authentication
-
+// Get All Users
 describe("GET /user", () => {
   it("should return a 200 response", async () => {
-    const res = await request(app).get("/user");
+    const user = {
+      firstName: "david",
+      password: "dazy123",
+    };
+    const token = await request(app).post("/user/login").send(user);
+    const res = await request(app)
+      .get("/user")
+      .set("Authorization", token.body);
+    expect(res.status).toBe(200);
+  });
+});
+
+// Show User
+
+describe("GET /user/:id", () => {
+  it("should return a 200 response", async () => {
+    const user = {
+      firstName: "david",
+      password: "dazy123",
+    };
+    const token = await request(app).post("/user/login").send(user);
+    const res = await request(app)
+      .get("/user/1")
+      .set("Authorization", token.body);
+    expect(res.status).toBe(200);
+  });
+});
+
+// update User
+
+describe("PUT /user/:id", () => {
+  it("should return a 200 response", async () => {
+    const user = {
+      firstName: "david",
+      password: "dazy123",
+    };
+    const token = await request(app).post("/user/login").send(user);
+    const res = await request(app)
+      .put("/user/1")
+      .set("Authorization", token.body)
+      .send(user);
+    expect(res.status).toBe(200);
+  });
+});
+
+// delete User
+
+describe("DELETE /user/:id", () => {
+  it("should return a 200 response", async () => {
+    const user = {
+      firstName: "david",
+      password: "dazy123",
+    };
+    const token = await request(app).post("/user/login").send(user);
+    const res = await request(app)
+      .delete("/user/1")
+      .set("Authorization", token.body);
     expect(res.status).toBe(200);
   });
 });
