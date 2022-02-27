@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import orderRoutes from "./handlers/Order";
 import productRoutes from "./handlers/Product";
 import userRoutes from "./handlers/User";
-import showOrderRoutes from "./handlers/CurrentOrder";
+import showOrderRoutes from "./handlers/Cart";
 
 const app: express.Application = express();
 const port = 3000;

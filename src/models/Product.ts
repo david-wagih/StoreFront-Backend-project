@@ -57,4 +57,16 @@ export class ProductsStore {
       throw new Error(`unable to delete product: ${error}`);
     }
   }
+
+  async update(id: number, product: Product) {
+    try {
+      const conn = await client.connect();
+      const sql = "UPDATE products SET name = $1, price = $2 WHERE id = $3";
+      const result = await conn.query(sql, [product.name, product.price, id]);
+      conn.release();
+      return result;
+    } catch (error) {
+      throw new Error(`unable to update product: ${error}`);
+    }
+  }
 }

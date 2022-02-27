@@ -42,17 +42,25 @@ const create = async (_req: express.Request, res: express.Response) => {
   }
 };
 
-const addProduct = async (req: express.Request, res: express.Response) => {
-  const orderId: string = req.params.id;
-  const productId: string = req.body.productId;
-  const quantity: number = parseInt(req.body.quantity);
+const updateOrder = async (req: express.Request, res: express.Response) => {
+  const orderId = req.params.id;
+  const status = req.body.status;
 
   try {
-    const addedProduct = await store.addProduct(quantity, orderId, productId);
-    res.json(addedProduct);
+    const updatedOrder = await store.updateOrder(Number(orderId), status);
+    res.json(updatedOrder);
   } catch (err) {
     res.status(400);
-    res.json(err);
+  }
+};
+
+const deleteOrder = async (req: express.Request, res: express.Response) => {
+  const orderId = req.params.id;
+  try {
+    const deletedOrder = await store.deleteOrder(Number(orderId));
+    res.json(deletedOrder);
+  } catch (err) {
+    res.status(400);
   }
 };
 
@@ -60,7 +68,8 @@ const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/:id", authenticate, show);
   app.post("/orders", authenticate, create);
-  app.post("/orders/:id/products", authenticate, addProduct);
+  app.put("/orders/:id", authenticate, updateOrder);
+  app.delete("/orders/:id", authenticate, deleteOrder);
 };
 
 export default orderRoutes;
