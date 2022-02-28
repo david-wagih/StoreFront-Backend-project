@@ -8,7 +8,7 @@
     "jasmine": "jasmine",
     "start": "nodemon src/server.ts",
     "watch": "tsc-watch",
-    "test": "set ENV=test && db-migrate --env test up && npm run build && npm run jasmine && db-migrate --env test down"
+    "test": "set ENV=test && db-migrate up --env test && npm run build && npm run jasmine && db-migrate down --env test"
   },
   "author": "Udacity",
   "dependencies": {

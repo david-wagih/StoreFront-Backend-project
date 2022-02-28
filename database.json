@@ -2,6 +2,7 @@
   "dev": {
     "driver": "pg",
     "host": "localhost",
+    "port": 5432,
     "database": "masks_store",
     "user": "postgres",
     "password": "Davidwagih123"
@@ -9,6 +10,7 @@
   "test": {
     "driver": "pg",
     "host": "localhost",
+    "port": 5432,
     "database": "masks_store_test",
     "user": "postgres",
     "password": "Davidwagih123"
