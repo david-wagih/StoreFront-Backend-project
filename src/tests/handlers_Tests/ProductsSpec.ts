@@ -18,8 +18,8 @@ describe("GET /products/:id", () => {
 describe("POST /products", () => {
   it("should return response of 200", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const response = await request(app)
@@ -36,8 +36,8 @@ describe("POST /products", () => {
 describe("DELETE /products/:id", () => {
   it("should return response of 200", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const response = await request(app)
@@ -50,8 +50,8 @@ describe("DELETE /products/:id", () => {
 describe("PUT /products/:id", () => {
   it("should return response of 200", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const response = await request(app)

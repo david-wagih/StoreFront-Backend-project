@@ -5,9 +5,9 @@ import app from "../../server";
 describe("POST /user", () => {
   it("should return a token", async () => {
     const user = {
-      firstName: "david",
-      lastName: "wagih",
-      password: "dazy123",
+      firstName: "David",
+      lastName: "Wagih",
+      password: "123456",
     };
     const res = await request(app).post("/user").send(user);
     expect(res.status).toBe(200);
@@ -18,8 +18,8 @@ describe("POST /user", () => {
 describe("POST /user/login", () => {
   it("should return a token", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const res = await request(app).post("/user/login").send(user);
     expect(res.status).toBe(200);
@@ -30,8 +30,8 @@ describe("POST /user/login", () => {
 describe("GET /user", () => {
   it("should return a 200 response", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const res = await request(app)
@@ -46,8 +46,8 @@ describe("GET /user", () => {
 describe("GET /user/:id", () => {
   it("should return a 200 response", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const res = await request(app)
@@ -62,8 +62,8 @@ describe("GET /user/:id", () => {
 describe("PUT /user/:id", () => {
   it("should return a 200 response", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const res = await request(app)
@@ -79,8 +79,8 @@ describe("PUT /user/:id", () => {
 describe("DELETE /user/:id", () => {
   it("should return a 200 response", async () => {
     const user = {
-      firstName: "david",
-      password: "dazy123",
+      firstName: "David",
+      password: "123456",
     };
     const token = await request(app).post("/user/login").send(user);
     const res = await request(app)
