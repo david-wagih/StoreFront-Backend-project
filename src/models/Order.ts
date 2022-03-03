@@ -23,23 +23,6 @@ export class OrdersStore {
       throw new Error(`${err}`);
     }
   }
-
-  async create(order: Order) {
-    console.log(order);
-    try {
-      const conn = await client.connect();
-      const sql =
-        "INSERT INTO orders (status,user_id) VALUES ($1, $2) RETURNING *";
-      const result = await conn.query(sql, [order.status, order.user_id]);
-      const newOrder = result.rows[0];
-      console.log(newOrder);
-      conn.release();
-      return newOrder;
-    } catch (error) {
-      throw new Error(`unable to create order: ${error}`);
-    }
-  }
-
   async show(id: number): Promise<Order> {
     try {
       const sql = "SELECT * FROM orders WHERE id=($1)";
@@ -53,6 +36,21 @@ export class OrdersStore {
       return orders;
     } catch (err) {
       throw new Error(`${err}`);
+    }
+  }
+  async create(order: Order) {
+    console.log(order);
+    try {
+      const conn = await client.connect();
+      const sql =
+        "INSERT INTO orders (status,user_id) VALUES ($1, $2) RETURNING *";
+      const result = await conn.query(sql, [order.status, order.user_id]);
+      const newOrder = result.rows[0];
+      console.log(newOrder);
+      conn.release();
+      return newOrder;
+    } catch (error) {
+      throw new Error(`unable to create order: ${error}`);
     }
   }
 

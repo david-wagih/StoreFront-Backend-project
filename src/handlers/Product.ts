@@ -34,22 +34,22 @@ const create = async (req: express.Request, res: express.Response) => {
   }
 };
 
-const deleteProduct = async (req: express.Request, res: express.Response) => {
+const updateProduct = async (req: express.Request, res: express.Response) => {
   try {
     // @ts-ignore
-    const deletedProduct = await store.delete(req.params.id);
-    res.json(deletedProduct);
+    const updatedProduct = await store.update(req.params.id, req.body);
+    res.json(updatedProduct);
   } catch (err) {
     res.status(400);
     res.json(err);
   }
 };
 
-const updateProduct = async (req: express.Request, res: express.Response) => {
+const deleteProduct = async (req: express.Request, res: express.Response) => {
   try {
     // @ts-ignore
-    const updatedProduct = await store.update(req.params.id, req.body);
-    res.json(updatedProduct);
+    const deletedProduct = await store.delete(req.params.id);
+    res.json(deletedProduct);
   } catch (err) {
     res.status(400);
     res.json(err);

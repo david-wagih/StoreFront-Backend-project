@@ -47,18 +47,6 @@ export class ProductsStore {
     }
   }
 
-  async delete(id: number) {
-    try {
-      const conn = await client.connect();
-      const sql = "DELETE FROM products WHERE id = $1 RETURNING *";
-      const result = await conn.query(sql, [id]);
-      conn.release();
-      return result;
-    } catch (error) {
-      throw new Error(`unable to delete product: ${error}`);
-    }
-  }
-
   async update(id: number, product: Product) {
     try {
       const conn = await client.connect();
@@ -69,6 +57,18 @@ export class ProductsStore {
       return result;
     } catch (error) {
       throw new Error(`unable to update product: ${error}`);
+    }
+  }
+
+  async delete(id: number) {
+    try {
+      const conn = await client.connect();
+      const sql = "DELETE FROM products WHERE id = $1 RETURNING *";
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      return result;
+    } catch (error) {
+      throw new Error(`unable to delete product: ${error}`);
     }
   }
 }
