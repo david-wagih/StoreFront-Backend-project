@@ -1,7 +1,5 @@
 import request from "supertest";
 import app from "../../server";
-// @ts-ignore
-import DBMigrate from "db-migrate";
 
 describe("GET /orders", () => {
   it("should return 200 OK", async () => {
@@ -63,15 +61,9 @@ describe("POST /orders", () => {
       .post("/orders")
       .send({
         status: "pending",
-        user_Id: "1",
+        user_id: 1,
       })
       .set("Authorization", token.body);
     expect(response.status).toBe(200);
   });
 });
-
-// afterAll(async function clearTestData() {
-//   let dbMigrate = DBMigrate.getInstance(true, { env: "test" });
-//   await dbMigrate.reset();
-//   await dbMigrate.up();
-// });
