@@ -23,7 +23,7 @@ export class ProductsStore {
   async show(id: number) {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM products WHERE id = $1";
+      const sql = "SELECT * FROM products WHERE id = $1 RETURNING *";
       const result = await conn.query(sql, [id]);
       const product = result.rows[0];
       conn.release();
@@ -36,7 +36,8 @@ export class ProductsStore {
   async create(product: Product) {
     try {
       const conn = await client.connect();
-      const sql = "INSERT INTO products (name, price) VALUES ($1, $2)";
+      const sql =
+        "INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *";
       const result = await conn.query(sql, [product.name, product.price]);
       const newProduct = result.rows[0];
       conn.release();
@@ -49,7 +50,7 @@ export class ProductsStore {
   async delete(id: number) {
     try {
       const conn = await client.connect();
-      const sql = "DELETE FROM products WHERE id = $1";
+      const sql = "DELETE FROM products WHERE id = $1 RETURNING *";
       const result = await conn.query(sql, [id]);
       conn.release();
       return result;
@@ -61,7 +62,8 @@ export class ProductsStore {
   async update(id: number, product: Product) {
     try {
       const conn = await client.connect();
-      const sql = "UPDATE products SET name = $1, price = $2 WHERE id = $3";
+      const sql =
+        "UPDATE products SET name = $1, price = $2 WHERE id = $3 RETURNING *";
       const result = await conn.query(sql, [product.name, product.price, id]);
       conn.release();
       return result;
