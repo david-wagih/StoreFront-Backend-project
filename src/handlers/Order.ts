@@ -57,8 +57,8 @@ const deleteOrder = async (req: express.Request, res: express.Response) => {
 
 const currentOrder = async (req: express.Request, res: express.Response) => {
   try {
-    const userId: number = req.body;
-    const currentOrder = await store.currentOrder(userId);
+    const user_id: number = parseInt(req.params.user_id);
+    const currentOrder = await store.currentOrder(user_id);
     res.json(currentOrder);
   } catch (err) {
     res.status(400);
@@ -68,7 +68,7 @@ const currentOrder = async (req: express.Request, res: express.Response) => {
 const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/:id", authenticate, show);
-  app.get("/orders/currentOrder", authenticate, currentOrder);
+  app.get("/orders/:user_id/currentOrder", authenticate, currentOrder);
   app.post("/orders", authenticate, create);
   app.put("/orders/:id", authenticate, updateOrder);
   app.delete("/orders/:id", authenticate, deleteOrder);
