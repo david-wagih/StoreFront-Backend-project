@@ -87,4 +87,21 @@ export class OrdersStore {
       throw new Error(`${err}`);
     }
   }
+
+  async currentOrder(user_id: number): Promise<Order> {
+    try {
+      const sql = "SELECT * FROM orders WHERE user_id = $1";
+      const conn = await client.connect();
+
+      const result = await conn.query(sql, [user_id]);
+
+      const currentOrder = result.rows[0];
+
+      conn.release();
+
+      return currentOrder;
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
 }

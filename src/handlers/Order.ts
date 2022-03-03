@@ -55,9 +55,20 @@ const deleteOrder = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const currentOrder = async (req: express.Request, res: express.Response) => {
+  try {
+    const userId: number = req.body;
+    const currentOrder = await store.currentOrder(userId);
+    res.json(currentOrder);
+  } catch (err) {
+    res.status(400);
+  }
+};
+
 const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/:id", authenticate, show);
+  app.get("/orders/currentOrder", authenticate, currentOrder);
   app.post("/orders", authenticate, create);
   app.put("/orders/:id", authenticate, updateOrder);
   app.delete("/orders/:id", authenticate, deleteOrder);
