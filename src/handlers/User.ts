@@ -85,8 +85,8 @@ const userRoutes = (app: express.Application) => {
   app.get("/user/:id", authenticate, show);
   app.post("/user", create);
   app.post("/user/login", login);
-  app.delete("/user/:id", authenticate, deleteUser);
   app.put("/user/:id", authenticate, updateUser);
+  app.delete("/user/:id", authenticate, deleteUser);
 };
 
 export default userRoutes;
