@@ -11,10 +11,12 @@
   SALT_ROUNDS = 10
   TOKEN_SECRET = someSecretToken
   POSTGRES_PORT = 5432
-- to connect to the database : db-migrate up >> to migrate all the schema and can work with it
+- to connect to the database : (db-migrate up) to migrate all the schema and can work with it
 - the Backend Port is 3000 , database Port is 5432
 - to install all the Packages used : npm install
 - to start the server and running the project : npm run start
+- to run all the tests we made : npm run test
+  when running the test script what happens is it is running the migrations on the testing database and then run all the tests then drop all the tables again
 
 <!-- # Storefront Backend Project
 
