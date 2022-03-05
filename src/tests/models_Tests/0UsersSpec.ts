@@ -54,9 +54,9 @@ describe("Update User Method", () => {
   });
 });
 
-// describe("Delete User Method", () => {
-//   it("should return a user", async () => {
-//     const user = await store.deleteUser(1);
-//     expect(user).toBeDefined();
-//   });
-// });
+describe("Delete User Method", () => {
+  it("should return a user", async () => {
+    const user = await store.deleteUser(1);
+    expect(user).toBeDefined();
+  });
+});

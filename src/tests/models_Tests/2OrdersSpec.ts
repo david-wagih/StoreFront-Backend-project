@@ -14,8 +14,8 @@ describe("Create Order Method", () => {
     // @ts-ignore
     const order: Order = {
       status: "old",
-      user_id: 1,
-      product_id: 1,
+      user_id: 2,
+      product_id: 2,
       quantity: 1,
     };
     const newOrder = await store.create(order);
@@ -35,8 +35,8 @@ describe("Update Order Method", () => {
     // @ts-ignore
     const order: Order = {
       status: "new",
-      user_id: 1,
-      product_id: 1,
+      user_id: 2,
+      product_id: 2,
       quantity: 1,
     };
     const order2 = await store.updateOrder(1, order);
@@ -44,9 +44,9 @@ describe("Update Order Method", () => {
   });
 });
 
-// describe("Delete Order Method", () => {
-//   it("should return an order", async () => {
-//     const order = await store.deleteOrder(1);
-//     expect(order).toBeDefined();
-//   });
-// });
+describe("Delete Order Method", () => {
+  it("should return an order", async () => {
+    const order = await store.deleteOrder(1);
+    expect(order).toBeDefined();
+  });
+});

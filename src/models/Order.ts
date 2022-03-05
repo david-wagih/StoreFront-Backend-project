@@ -41,7 +41,6 @@ export class OrdersStore {
     }
   }
   async create(order: Order) {
-    console.log(order);
     try {
       const conn = await client.connect();
       const sql =
@@ -86,7 +85,7 @@ export class OrdersStore {
 
   async deleteOrder(id: number): Promise<Order> {
     try {
-      const sql = "DELETE FROM orders WHERE id = $1";
+      const sql = "DELETE FROM orders WHERE id = $1 RETURNING *";
       const conn = await client.connect();
 
       const result = await conn.query(sql, [id]);
