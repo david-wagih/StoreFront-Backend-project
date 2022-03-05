@@ -25,6 +25,17 @@ const show = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const showByUser = async (req: express.Request, res: express.Response) => {
+  try {
+    const userId: number = parseInt(req.params.id);
+    const orders = await store.showByUser(userId);
+    res.json(orders);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 const create = async (req: express.Request, res: express.Response) => {
   try {
     const neworder = await store.create(req.body);
@@ -55,21 +66,11 @@ const deleteOrder = async (req: express.Request, res: express.Response) => {
   }
 };
 
-const currentOrder = async (req: express.Request, res: express.Response) => {
-  try {
-    const user_id: number = parseInt(req.params.user_id);
-    const currentOrder = await store.currentOrder(user_id);
-    res.json(currentOrder);
-  } catch (err) {
-    res.status(400);
-  }
-};
-
 const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/:id", authenticate, show);
+  app.get("/orders/:user_id", authenticate, showByUser);
   app.post("/orders", authenticate, create);
-  app.get("/orders/:user_id/currentOrder", authenticate, currentOrder);
   app.put("/orders/:id", authenticate, updateOrder);
   app.delete("/orders/:id", authenticate, deleteOrder);
 };
