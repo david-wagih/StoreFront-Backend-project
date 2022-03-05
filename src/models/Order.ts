@@ -102,7 +102,8 @@ export class OrdersStore {
 
   async currentOrder(user_id: number): Promise<Order> {
     try {
-      const sql = "SELECT * FROM orders WHERE user_id = $1";
+      const sql =
+        "SELECT * FROM orders WHERE user_id = $1 AND status = 'pending'";
       const conn = await client.connect();
 
       const result = await conn.query(sql, [user_id]);
