@@ -41,6 +41,7 @@ export class OrdersStore {
     }
   }
   async create(order: Order) {
+    console.log(order);
     try {
       const conn = await client.connect();
       const sql =
