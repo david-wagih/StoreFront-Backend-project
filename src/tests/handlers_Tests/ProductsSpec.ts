@@ -8,7 +8,6 @@ describe("GET /products", () => {
   });
 });
 
-// todo : problem here
 describe("GET /products/:id", () => {
   it("should return response of 200", async () => {
     const response = await request(app).get("/products/1");

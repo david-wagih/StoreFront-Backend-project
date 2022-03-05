@@ -47,11 +47,11 @@ export class OrdersStore {
         "INSERT INTO orders (status ,user_id, product_id, quantity) VALUES ($1, $2, $3, $4) RETURNING *";
       const result = await conn.query(sql, [
         order.status,
-        Number(order.user_id),
-        Number(order.product_id),
-        Number(order.quantity),
+        order.user_id,
+        order.product_id,
+        order.quantity,
       ]);
-      const newOrder = result.rows;
+      const newOrder = result.rows[0];
       conn.release();
       return newOrder;
     } catch (error) {
