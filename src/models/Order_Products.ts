@@ -10,7 +10,8 @@ export type Order_Products = {
 export class Order_ProductsStore {
   async GetOrder(id: number): Promise<Order_Products[]> {
     try {
-      const sql = "SELECT * FROM order_products WHERE order_id = $1";
+      const sql =
+        "SELECT name,  price from products JOIN order_products ON products.id = order_products.product_id WHERE order_id = $1";
       const conn = await client.connect();
 
       const result = await conn.query(sql, [id]);
