@@ -13,7 +13,7 @@ describe("Create Order Method", () => {
   it("should create an order", async () => {
     // @ts-ignore
     const order: Order = {
-      status: "pending",
+      status: "old",
       user_id: 1,
       product_id: 1,
       quantity: 1,
@@ -34,10 +34,10 @@ describe("Update Order Method", () => {
   it("should return an order", async () => {
     // @ts-ignore
     const order: Order = {
-      status: "pending",
+      status: "new",
       user_id: 1,
       product_id: 1,
-      quantity: 100,
+      quantity: 1,
     };
     const order2 = await store.updateOrder(1, order);
     expect(order2).toBeDefined();

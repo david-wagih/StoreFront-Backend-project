@@ -6,8 +6,8 @@ describe("Create Product Method", () => {
   it("should return a product", async () => {
     // @ts-ignore
     const newProduct: Product = {
-      name: "Product1",
-      price: 100,
+      name: "spiderman",
+      price: 50,
     };
     const product = await store.create(newProduct);
     expect(product).toBeDefined();
@@ -32,8 +32,8 @@ describe("Update Product Method", () => {
   it("should return a product", async () => {
     // @ts-ignore
     const product: Product = {
-      name: "Product 1",
-      price: 100,
+      name: "antman",
+      price: 250,
     };
     const product2 = await store.update(1, product);
     expect(product2).toBeDefined();
