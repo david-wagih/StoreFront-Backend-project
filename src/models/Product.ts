@@ -23,7 +23,7 @@ export class ProductsStore {
   async show(id: number) {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM products WHERE id = $1 RETURNING *";
+      const sql = "SELECT * FROM products WHERE id = $1";
       const result = await conn.query(sql, [id]);
       const product = result.rows[0];
       conn.release();

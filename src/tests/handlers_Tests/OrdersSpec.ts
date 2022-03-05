@@ -1,7 +1,5 @@
 import request from "supertest";
 import app from "../../server";
-// @ts-ignore
-import DBMigrate from "db-migrate";
 
 describe("GET /orders", () => {
   it("should return 200 OK", async () => {
@@ -24,7 +22,7 @@ describe("GET /orders/:id", () => {
   });
 });
 
-describe("DELETE /orders/:id", () => {
+describe("GET /orders/:user_id/currentOrder", () => {
   it("should return 200 OK", async () => {
     const user = {
       firstName: "David",
@@ -32,7 +30,28 @@ describe("DELETE /orders/:id", () => {
     };
     const token = await request(app).post("/user/login").send(user);
     const response = await request(app)
-      .delete("/orders/1")
+      .get("/orders/1/currentOrder")
+      .set("Authorization", token.body);
+    expect(response.status).toBe(200);
+  });
+});
+
+// todo : problem here
+describe("POST /orders", () => {
+  it("should return 200 OK", async () => {
+    const user = {
+      firstName: "David",
+      password: "123456",
+    };
+    const token = await request(app).post("/user/login").send(user);
+    const response = await request(app)
+      .post("/orders")
+      .send({
+        status: "pending",
+        user_id: "1",
+        product_id: "1",
+        quantity: "20",
+      })
       .set("Authorization", token.body);
     expect(response.status).toBe(200);
   });
@@ -52,7 +71,7 @@ describe("PUT /orders/:id", () => {
   });
 });
 
-describe("POST /orders", () => {
+describe("DELETE /orders/:id", () => {
   it("should return 200 OK", async () => {
     const user = {
       firstName: "David",
@@ -60,18 +79,8 @@ describe("POST /orders", () => {
     };
     const token = await request(app).post("/user/login").send(user);
     const response = await request(app)
-      .post("/orders")
-      .send({
-        status: "pending",
-        user_id: 1,
-      })
+      .delete("/orders/1")
       .set("Authorization", token.body);
     expect(response.status).toBe(200);
   });
 });
-
-// afterAll(async function clearTestData() {
-//   let dbMigrate = DBMigrate.getInstance(true, { env: "test" });
-//   await dbMigrate.reset();
-//   await dbMigrate.up();
-// });

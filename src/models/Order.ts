@@ -41,19 +41,17 @@ export class OrdersStore {
     }
   }
   async create(order: Order) {
-    console.log(order);
     try {
       const conn = await client.connect();
       const sql =
-        "INSERT INTO orders (status,user_id,product_id,quantity) VALUES ($1, $2, $3, $4) RETURNING *";
+        "INSERT INTO orders (status ,user_id, product_id, quantity) VALUES ($1, $2, $3, $4) RETURNING *";
       const result = await conn.query(sql, [
         order.status,
-        order.user_id,
-        order.product_id,
-        order.quantity,
+        Number(order.user_id),
+        Number(order.product_id),
+        Number(order.quantity),
       ]);
-      const newOrder = result.rows[0];
-      console.log(newOrder);
+      const newOrder = result.rows;
       conn.release();
       return newOrder;
     } catch (error) {
