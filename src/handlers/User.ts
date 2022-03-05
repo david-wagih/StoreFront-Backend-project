@@ -72,6 +72,7 @@ const updateUser = async (req: express.Request, res: express.Response) => {
 const deleteUser = async (req: express.Request, res: express.Response) => {
   try {
     const deletedUser = await store.deleteUser(Number(req.params.id));
+    console.log(deletedUser);
     res.json(deletedUser);
   } catch (err) {
     res.status(404);
