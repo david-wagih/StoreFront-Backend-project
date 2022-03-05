@@ -68,8 +68,8 @@ const currentOrder = async (req: express.Request, res: express.Response) => {
 const orderRoutes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/:id", authenticate, show);
-  app.get("/orders/:user_id/currentOrder", authenticate, currentOrder);
   app.post("/orders", authenticate, create);
+  app.get("/orders/:user_id/currentOrder", authenticate, currentOrder);
   app.put("/orders/:id", authenticate, updateOrder);
   app.delete("/orders/:id", authenticate, deleteOrder);
 };
