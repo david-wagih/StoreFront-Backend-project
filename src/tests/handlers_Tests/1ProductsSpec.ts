@@ -11,7 +11,7 @@ describe("GET /products", () => {
 
 describe("GET /products/:id", () => {
   it("should return a product", async () => {
-    const response = await request(app).get("/products/1");
+    const response = await request(app).get("/products/4");
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
   });
@@ -48,7 +48,7 @@ describe("PUT /products/:id", () => {
       price: 100,
     };
     const response = await request(app)
-      .put("/products/2")
+      .put("/products/4")
       .send(newProduct)
       .set("Authorization", token.body);
     expect(response.status).toBe(200);

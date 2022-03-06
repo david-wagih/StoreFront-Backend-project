@@ -26,7 +26,7 @@ export class Order_ProductsStore {
     }
   }
 
-  async addProduct(cart: Order_Products): Promise<Order_Products> {
+  async addProduct(cart: Order_Products): Promise<Order_Products[]> {
     try {
       const sql =
         "INSERT INTO order_products (order_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *";
@@ -35,7 +35,7 @@ export class Order_ProductsStore {
         cart.product_id,
         cart.quantity,
       ]);
-      return result.rows[0];
+      return result.rows;
     } catch (error) {
       throw error;
     }

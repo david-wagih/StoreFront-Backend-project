@@ -24,7 +24,7 @@ describe("Get /user/:id show", () => {
     };
     const token = await request(app).post("/user").send(user);
     const response = await request(app)
-      .get("/user/1")
+      .get("/user/2")
       .set("Authorization", token.body);
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);

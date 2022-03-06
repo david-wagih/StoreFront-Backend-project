@@ -28,6 +28,12 @@ CREATE TABLE orders (
     user_id bigint REFERENCES users(id)
     );
 
+    INSERT INTO orders (status, user_id) VALUES ('active', 2);
+    INSERT INTO orders (status, user_id) VALUES ('active', 2);
+    INSERT INTO orders (status, user_id) VALUES ('active', 2);
+    INSERT INTO orders (status, user_id) VALUES ('active', 2);
+    INSERT INTO orders (status, user_id) VALUES ('active', 2);
+
 
 CREATE TABLE order_products( 
     id SERIAL PRIMARY KEY, 
@@ -35,6 +41,11 @@ CREATE TABLE order_products(
     product_id bigint REFERENCES products(id), 
     quantity integer NOT NULL
 );
+
+    INSERT INTO order_products (order_id, product_id, quantity) VALUES (2, 2, 2);
+    INSERT INTO order_products (order_id, product_id, quantity) VALUES (4, 2, 4);
+    INSERT INTO order_products (order_id, product_id, quantity) VALUES (5, 2, 5);
+    
 
 
    

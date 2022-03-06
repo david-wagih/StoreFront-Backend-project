@@ -33,8 +33,6 @@ describe("POST /orders", () => {
     const newOrder = {
       status: "pending",
       user_id: 2,
-      product_id: 2,
-      quantity: 1,
     };
     const response = await request(app)
       .post("/orders")
@@ -44,7 +42,7 @@ describe("POST /orders", () => {
   });
 });
 
-describe("GET /orders/:user_id/CurrentOrder", () => {
+describe("GET /orders/:user_id", () => {
   it("should return Current Order for a user", async () => {
     const user1 = {
       firstName: "John",
@@ -52,7 +50,7 @@ describe("GET /orders/:user_id/CurrentOrder", () => {
     };
     const token = await request(app).post("/user").send(user1);
     const response = await request(app)
-      .get("/orders/2/currentOrder")
+      .get("/orders/2")
       .set("Authorization", token.body);
     expect(response.status).toBe(200);
   });
@@ -68,8 +66,6 @@ describe("PUT /orders/:id", () => {
     const newOrder = {
       status: "confirmed",
       user_id: 2,
-      product_id: 2,
-      quantity: 1,
     };
     const response = await request(app)
       .put("/orders/2")
