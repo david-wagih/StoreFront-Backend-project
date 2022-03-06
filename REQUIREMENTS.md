@@ -35,26 +35,26 @@
 
 ### users Table :
 
-- first Column : id of type >> integer
+- first Column : id of type >> integer [Primary Key]
 - Second Column : firstName of type >> VARCHAR(50)
 - Third Column : lastName of type >> VARCHAR(50)
 - Fourth Column : password of type >> text
 
 ### products Table :
 
-- first Column : id of type >> integer
+- first Column : id of type >> integer [Primary Key]
 - Second Column : name of type >> VARCHAR(64)
 - Third Column : price of type >> integer
 
 ### orders Table :
 
-- first Column : id of type >> integer
+- first Column : id of type >> integer [Primary Key]
 - Second Column : status of type >> VARCHAR(15)
 - Third Column : user_id of type >> bigint [foreign key References table users(id)]
 
 ### order_products Table :
 
-- first Column : id of type >> integer
+- first Column : id of type >> integer [Primary Key]
 - Second Column : order_id of type >> bigint [foreign key References table orders(id)]
 - Third Column : product_id of type >> bigint [foreign key References table products(id)]
 - Fourth Column : quantity of type >> integer
