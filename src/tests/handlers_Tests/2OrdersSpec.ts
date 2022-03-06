@@ -3,7 +3,14 @@ import app from "../../server";
 
 describe("GET /orders", () => {
   it("should return all orders", async () => {
-    const response = await request(app).get("/orders");
+    const user1 = {
+      firstName: "John",
+      password: "password",
+    };
+    const token = await request(app).post("/user").send(user1);
+    const response = await request(app)
+      .get("/orders")
+      .set("Authorization", token.body);
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
   });

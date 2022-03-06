@@ -67,7 +67,7 @@ const deleteOrder = async (req: express.Request, res: express.Response) => {
 };
 
 const orderRoutes = (app: express.Application) => {
-  app.get("/orders", index);
+  app.get("/orders", authenticate, index);
   app.get("/orders/:id", authenticate, show);
   app.get("/orders/:user_id", authenticate, showByUser);
   app.post("/orders", authenticate, create);
