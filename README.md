@@ -14,6 +14,17 @@
 
 ## to setup and connect to the database :
 
+CREATE USER postgres WITH PASSWORD 'Davidwagih123';
+CREATE DATABASE masks_store;
+CREATE DATABASE masks_store_test;
+GRANT ALL PRIVILEGES ON DATABASE masks_store TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE masks_store_test TO postgres;
+
+### you now have created the needed setup to connect to the database
+
+- to run the up migrations here write in the command : db-migrate up
+- to run the down migrations here write in the command : db-migrate down
+
 ## Port Numbers:
 
 - the Backend Port is 3000 , database Port is 5432
@@ -29,6 +40,7 @@ npm run start
 ## to run all the tests we made :
 
 npm run test
+this script will build all tables for you on the testing database we created above and run all the tests then drop all the tables at the end
 
 <!-- # Storefront Backend Project
 
