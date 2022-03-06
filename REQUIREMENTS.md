@@ -21,11 +21,15 @@
 
 - GET http://localhost:3000/orders (to get a list of all orders)
 - GET http://localhost:3000/orders/:id (to get a specific order , need Authorization)
+- GET http://localhost:3000/orders/:user_id (to get current order for specific user , need Authorization )
 - POST http://localhost:3000/orders (to create a new order , need Authorization)
-- GET http://localhost:3000/orders/:user_id/currentOrder (to get current order with status pending for specific user , need Authorization )
 - PUT http://localhost:3000/orders/:id (to update the data of a order , needs Authorization)
 - DELETE http://localhost:3000/orders/:id (to delete certain order , needs Authorization )
 
+## Order_Products Apis :
+
+- GET http://localhost:3000/orders/GetOrder/:id ( to get order details by order id , need authorization)
+- POST https://localhost:3000/orders/newProduct ( to add new product to specific order , need authorization)
 <!-- # API Requirements
 
 The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
